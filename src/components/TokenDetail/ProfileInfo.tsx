@@ -1,11 +1,9 @@
-import React from "react";
-
-interface ProfileInfoProps {
+interface TokenInfoProps {
   name: string;
   description: string;
 }
 
-export function ProfileInfo({ name, description }: ProfileInfoProps) {
+export function TokenInfo({ name, description }: TokenInfoProps) {
   return (
     <div className="flex items-center gap-4">
       <div className="w-12 h-12 rounded-xl bg-gray-200"></div>

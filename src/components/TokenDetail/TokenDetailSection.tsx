@@ -1,5 +1,4 @@
-import React from "react";
-import { ProfileInfo } from "./ProfileInfo";
+import { TokenInfo } from "./ProfileInfo";
 import { Rating } from "./Rating";
 import { StatsGrid } from "./StatsGrid";
 
@@ -18,8 +17,8 @@ export function TokenDetailSection({
 }: TokenDetailSectionProps) {
   return (
     <section className="space-y-4 bg-white shadow-lg rounded-lg border border-gray-200">
-      <div className="flex items-center justify-between p-4">
-        <ProfileInfo name={name} description={description} />
+      <div className="flex items-center justify-between px-6 pt-6">
+        <TokenInfo name={name} description={description} />
         <Rating value={rating} />
       </div>
       <StatsGrid stats={stats} />

@@ -13,6 +13,7 @@ const config: Config = {
         foreground: "var(--foreground)",
         "brand-green": "#2EBD85",
         "brand-green-light": "#35FC95",
+        "brand-gray": "#2B3139",
       },
     },
   },

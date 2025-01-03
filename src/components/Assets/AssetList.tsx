@@ -1,5 +1,6 @@
 import React from "react";
 import { Asset } from "./types";
+import { cn } from "@/lib/utils";
 
 interface AssetListProps {
   assets: Asset[];
@@ -7,7 +8,13 @@ interface AssetListProps {
 
 export function AssetList({ assets }: AssetListProps) {
   return (
-    <div className="grid grid-cols-2 gap-2 mt-4">
+    <div
+      className={cn(
+        "grid grid-cols-2 gap-6 grid-flow-col grid-rows-3",
+        assets.length > 6 && "grid-cols-3",
+        assets.length > 9 && "grid-cols-4"
+      )}
+    >
       {assets.map((asset) => (
         <div key={asset.name} className="flex items-center gap-2">
           <div
