@@ -1,4 +1,4 @@
-import { TokenInfo } from "./ProfileInfo";
+import { TokenInfo } from "./TokenInfo";
 import { Rating } from "./Rating";
 import { StatsGrid } from "./StatsGrid";
 
