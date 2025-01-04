@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { MetricItem } from "./MetricItem";
+import { useAccount, useReadContracts } from "wagmi";
+import { erc20Abi, formatUnits } from "viem";
+import { useQuery } from "@tanstack/react-query";
 
 interface Metric {
   label: string;
@@ -10,9 +13,78 @@ interface Metric {
 
 interface PerformanceSectionProps {
   metrics: Metric[];
+  tokenAddress: string;
+  poolAddress: string;
 }
 
-export function PerformanceSection({ metrics }: PerformanceSectionProps) {
+const getPrices = async (poolAddress: string) => {
+  try {
+    const price = await fetch(`/api/prices?poolAddress=${poolAddress}`);
+    const data = await price.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export function PerformanceSection({
+  metrics,
+  tokenAddress,
+  poolAddress,
+}: PerformanceSectionProps) {
+  /* Token Balance */
+  const { address } = useAccount();
+  const tokenBalance = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: tokenAddress as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "balanceOf",
+        args: [address!],
+      },
+      {
+        address: tokenAddress as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "decimals",
+      },
+      {
+        address: tokenAddress as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "symbol",
+      },
+    ],
+  });
+
+  const tokenBalanceFormatted = useMemo(() => {
+    if (!tokenBalance.data || tokenBalance.data.length < 2) return 0;
+    return formatUnits(tokenBalance.data[0], tokenBalance.data[1]) || 0;
+  }, [tokenBalance.data]);
+
+  const { data: priceToken } = useQuery({
+    queryKey: ["priceToken", tokenAddress],
+    queryFn: () => getPrices(poolAddress),
+    enabled: !!poolAddress,
+    refetchInterval: 0,
+  });
+
+  useEffect(() => {
+    if (tokenBalance.data) {
+      metrics[3].value = tokenBalanceFormatted.toString();
+    }
+  }, [tokenBalance, tokenBalanceFormatted, metrics]);
+
+  useEffect(() => {
+    if (priceToken) {
+      console.log(priceToken);
+      // metrics[4].value = (
+      //   parseFloat(tokenBalanceFormatted.toString()) *
+      //   parseFloat(priceToken?.price.toString())
+      // ).toString();
+    }
+  }, [tokenBalanceFormatted, priceToken, metrics]);
+
   return (
     <section className="space-y-4 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
       <h3 className="text-lg font-semibold">Performance</h3>

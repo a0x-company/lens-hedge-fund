@@ -1,0 +1,6 @@
+const addresses = {
+  deployerAddress: "0x0000000000000000000000000000000000000000",
+  wethAddress: "0x0000000000000000000000000000000000000000",
+};
+
+export default addresses;

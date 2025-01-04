@@ -4,12 +4,16 @@ import React from "react";
 import { DonutChart } from "./DonutChart";
 import { AssetList } from "./AssetList";
 import { Asset } from "./types";
+import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 
 interface AssetsSectionProps {
   assets: Asset[];
+  treasuryAddress: string;
 }
 
-export function AssetsSection({ assets }: AssetsSectionProps) {
+export function AssetsSection({ assets, treasuryAddress }: AssetsSectionProps) {
+  const netAssetValue = 0; // TODO: get from market data
   return (
     <section className="p-6 bg-white shadow-lg rounded-lg border border-gray-200">
       <div className="flex justify-between items-center mb-4">
@@ -19,6 +23,19 @@ export function AssetsSection({ assets }: AssetsSectionProps) {
       <div className="flex items-center justify-start gap-4">
         <DonutChart assets={assets} />
         <AssetList assets={assets} />
+      </div>
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-sm text-gray-500">
+          Net Asset Value: <span className="font-bold">${netAssetValue}</span>
+        </p>
+        <Link
+          href={`https://basescan.org/address/${treasuryAddress}`}
+          target="_blank"
+          className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+        >
+          {treasuryAddress.slice(0, 6)}...{treasuryAddress.slice(-4)}
+          <ExternalLink className="w-4 h-4" />
+        </Link>
       </div>
     </section>
   );
