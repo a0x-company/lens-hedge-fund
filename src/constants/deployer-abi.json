@@ -1,0 +1,13 @@
+[
+  {
+    "inputs": [
+      { "internalType": "string", "name": "tokenName", "type": "string" }
+    ],
+    "name": "getTokenInfo",
+    "outputs": [
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

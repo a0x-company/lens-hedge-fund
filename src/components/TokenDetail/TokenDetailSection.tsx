@@ -7,6 +7,8 @@ interface TokenDetailSectionProps {
   description: string;
   rating: number;
   stats: Array<{ label: string; value: string }>;
+  tokenAddress: string;
+  poolAddress: string;
 }
 
 export function TokenDetailSection({
@@ -14,12 +16,19 @@ export function TokenDetailSection({
   description,
   rating,
   stats,
+  tokenAddress,
+  poolAddress,
 }: TokenDetailSectionProps) {
   return (
     <section className="space-y-4 bg-white shadow-lg rounded-lg border border-gray-200">
       <div className="flex items-center justify-between px-6 pt-6">
         <TokenInfo name={name} description={description} />
-        <Rating value={rating} />
+        <Rating
+          value={rating}
+          name={name}
+          tokenAddress={tokenAddress}
+          poolAddress={poolAddress}
+        />
       </div>
       <StatsGrid stats={stats} />
     </section>
