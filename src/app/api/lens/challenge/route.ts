@@ -1,15 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextRequest, NextResponse } from 'next/server'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' })
-  }
-
+export async function POST(request: NextRequest) {
   try {
-    const { address } = req.body
+    const { address } = await request.json()
 
     const response = await fetch('https://api.lens.dev/', {
       method: 'POST',
@@ -32,8 +25,8 @@ export default async function handler(
     })
 
     const data = await response.json()
-    res.status(200).json(data.data.challenge)
+    return NextResponse.json(data.data.challenge)
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching challenge' })
+    return NextResponse.json({ error: 'Error fetching challenge' }, { status: 500 })
   }
 }
