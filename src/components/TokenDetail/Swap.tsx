@@ -139,7 +139,7 @@ export function Swap({
     name,
     addresses.deployerAddress as `0x${string}`,
     true,
-    BigInt(tokenAmount)
+    BigInt(parseFloat(tokenAmount) * 1e18)
   );
 
   const handleApprove = async () => {
@@ -154,7 +154,9 @@ export function Swap({
     isLoading: isLoadingSwap,
   } = useSwap(
     addresses.deployerAddress as `0x${string}`,
-    currentMode === "buy" ? BigInt(ethAmount) : BigInt(tokenAmount)
+    currentMode === "buy"
+      ? BigInt(parseFloat(ethAmount) * 1e18)
+      : BigInt(parseFloat(tokenAmount) * 1e18) // TODO: change to decimals of token
   );
 
   const handleSwap = async () => {
