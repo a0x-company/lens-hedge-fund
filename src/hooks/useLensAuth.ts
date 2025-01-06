@@ -1,12 +1,15 @@
-import { useAccount, useSignMessage } from 'wagmi'
+'use client'
+
 import { useState, useCallback } from 'react'
+import { useAccount, useSignMessage } from 'wagmi'
+import { useToast } from '@/components/shadcn/use-toast'
 
 interface Profile {
   id: string
   handle: string
-  displayName?: string
   picture?: string
-  stats: {
+  displayName?: string
+  stats?: {
     followers: number
     following: number
     posts: number
@@ -14,13 +17,14 @@ interface Profile {
 }
 
 export function useLensAuth() {
-  const { address, isConnected } = useAccount()
+  const { address } = useAccount()
   const { signMessageAsync } = useSignMessage()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(false)
+  const { toast } = useToast()
 
   const authenticate = useCallback(async () => {
-    if (!address || !isConnected) return
+    if (!address) return
 
     try {
       setLoading(true)
@@ -32,56 +36,53 @@ export function useLensAuth() {
         body: JSON.stringify({ address })
       })
       
-      const { id, text, profile: challengeProfile } = await challengeRes.json()
+      const { text, id } = await challengeRes.json()
       
-      // 2. Firmar el challenge
+      // 2. Firmar el mensaje
       const signature = await signMessageAsync({ message: text })
       
-      // 3. Verificar la firma y autenticar
+      // 3. Verificar y autenticar
       const authRes = await fetch('/api/lens/authenticate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          id, 
-          signature,
-          address 
-        })
+        body: JSON.stringify({ id, signature, address })
       })
 
-      const { success, profile: authProfile, needsSignless, signlessData } = await authRes.json()
+      const data = await authRes.json()
 
-      if (needsSignless) {
-        // 4. Si es necesario, habilitar signless
-        const { typedData } = signlessData
-        const signlessSignature = await signMessageAsync({ 
-          message: JSON.stringify(typedData)
-        })
-
-        await fetch('/api/lens/authenticate', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: signlessData.id,
-            signature: signlessSignature
-          })
-        })
+      if (data.error) {
+        throw new Error(data.error)
       }
 
-      setProfile(authProfile)
-      return authProfile
+      if (data.needsSignless) {
+        // Manejar la activación de signless si es necesario
+        // Esto es opcional y puedes implementarlo más tarde
+      }
+
+      setProfile(data.profile)
+      toast({
+        title: "Connected to Lens",
+        description: `Welcome ${data.profile.handle}!`
+      })
+
+      return data.profile
 
     } catch (error) {
       console.error('Error authenticating with Lens:', error)
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to connect to Lens",
+        variant: "destructive"
+      })
       throw error
     } finally {
       setLoading(false)
     }
-  }, [address, isConnected, signMessageAsync])
+  }, [address, signMessageAsync, toast])
 
   return {
     authenticate,
     profile,
-    loading,
-    isConnected
+    loading
   }
 }

@@ -1,20 +1,17 @@
 "use client";
 
 import { ReactNode } from "react";
-
 import { base } from "@reown/appkit/networks";
 import { metadata, projectId, wagmiAdapter } from "@/config";
 import { createAppKit } from "@reown/appkit/react";
-
 import { State, WagmiProvider } from "wagmi";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
 if (!projectId) throw new Error("Project ID is not defined in context");
 
-createAppKit({
+export const appKit = createAppKit({
   adapters: [wagmiAdapter],
   networks: [base],
   metadata: metadata,
