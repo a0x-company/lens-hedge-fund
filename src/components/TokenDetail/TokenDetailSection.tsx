@@ -5,7 +5,6 @@ import { StatsGrid } from "./StatsGrid";
 interface TokenDetailSectionProps {
   name: string;
   description: string;
-  rating: number;
   stats: Array<{ label: string; value: string }>;
   tokenAddress: string;
   poolAddress: string;
@@ -14,7 +13,6 @@ interface TokenDetailSectionProps {
 export function TokenDetailSection({
   name,
   description,
-  rating,
   stats,
   tokenAddress,
   poolAddress,
@@ -24,7 +22,6 @@ export function TokenDetailSection({
       <div className="flex items-center justify-between px-6 pt-6">
         <TokenInfo name={name} description={description} />
         <Rating
-          value={rating}
           name={name}
           tokenAddress={tokenAddress}
           poolAddress={poolAddress}

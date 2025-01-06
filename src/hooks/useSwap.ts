@@ -15,9 +15,11 @@ import {
 
 export const useSwap = (
   _contractAddress: `0x${string}`,
-  _amount: bigint,
-  onSuccess?: () => void,
-  refetch: boolean = false
+  _amountIn: bigint,
+  _tokenIn: `0x${string}`,
+  _tokenOut: `0x${string}`,
+  refetch: boolean = false,
+  onSuccess?: () => void
 ) => {
   const { chainId } = useAccount();
 
@@ -29,10 +31,10 @@ export const useSwap = (
     address: contractAddress,
     chainId: chainId,
     abi: deployerAbi,
-    functionName: "buyToken", // TODO: modify function name
-    args: [_amount],
+    functionName: "swap", // TODO: modify function name
+    args: [_tokenIn, _tokenOut, _amountIn],
     query: {
-      enabled: _amount > 0 && refetch,
+      enabled: _amountIn > 0 && refetch,
     },
   });
 
@@ -63,10 +65,7 @@ export const useSwap = (
 
   return {
     simulate,
-    isLoading:
-      write.isPending ||
-      wait.isLoading ||
-      (simulate.isPending && !simulate.isFetched),
+    isLoading: wait.isLoading,
     write,
     wait,
   };

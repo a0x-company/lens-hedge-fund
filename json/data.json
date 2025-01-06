@@ -1,12 +1,24 @@
 {
   "CAP": {
-    "name": "$CAP",
+    "name": "CAP",
     "description": "$CAP is a token that is used to reward the community for their contributions to the project.",
-    "rating": 1.747,
     "stats": [
-      { "label": "Liquidity", "value": "$6,135.00" },
-      { "label": "24H Volume", "value": "$1,234.56" },
-      { "label": "APR", "value": "100%" }
+      {
+        "label": "Liquidity",
+        "value": "$6,135.00"
+      },
+      {
+        "label": "Price Token/USD",
+        "value": "0.001"
+      },
+      {
+        "label": "Price Token/WETH",
+        "value": "0.001"
+      },
+      {
+        "label": "Price WETH/Token",
+        "value": "1087.958"
+      }
     ],
     "assets": [
       {
@@ -47,14 +59,130 @@
       }
     ],
     "metrics": [
-      { "label": "Market Cap", "value": "$50,053.00" },
-      { "label": "LP Value", "value": "$53.00" },
-      { "label": "LP Balance", "value": "0" },
-      { "label": "Your Holdings", "value": "0" },
-      { "label": "Your Market Value", "value": "0" }
+      {
+        "label": "Market Cap",
+        "value": "$50,053.00"
+      },
+      {
+        "label": "LP Value",
+        "value": "$53.00"
+      },
+      {
+        "label": "LP Balance",
+        "value": "0"
+      },
+      {
+        "label": "Your Holdings",
+        "value": "0"
+      },
+      {
+        "label": "Your Market Value",
+        "value": "0"
+      }
     ],
     "treasuryAddress": "0xf2bE870e0512f3C79613271de77383e8371dEb75",
     "tokenAddress": "0xe31c372a7af875b3b5e0f3713b17ef51556da667",
     "poolAddress": "0x778B848D35CdD7d20845237832A8DC47D6C28b65"
+  },
+  "0x0c6e8de8d2e9e1727cd85fe682ee01c2195417f4": {
+    "name": "ChillBull",
+    "description": "Chill Bull is a token that is used to reward the community for their contributions to the project.",
+    "stats": [
+      {
+        "label": "Liquidity",
+        "value": "25.59"
+      },
+      {
+        "label": "Price Token/USD",
+        "value": "0.000000382"
+      },
+      {
+        "label": "Price Token/WETH",
+        "value": "0.000000000099"
+      },
+      {
+        "label": "Price WETH/Token",
+        "value": "10123813792.978"
+      }
+    ],
+    "assets": [
+      {
+        "name": "ETH",
+        "percentage": 86.55189884004434,
+        "color": "#1E88E5",
+        "fill": "#1E88E5"
+      },
+      {
+        "name": "MOXIE",
+        "percentage": 7.522020920673295,
+        "color": "#33FCFF",
+        "fill": "#33FCFF"
+      },
+      {
+        "name": "BASED",
+        "percentage": 3.818100592480963,
+        "color": "#43A047",
+        "fill": "#43A047"
+      },
+      {
+        "name": "USDC",
+        "percentage": 2.056564418983515,
+        "color": "#43A047",
+        "fill": "#43A047"
+      },
+      {
+        "name": "AERO",
+        "percentage": 0.045445288142617536,
+        "color": "#FF3380",
+        "fill": "#FF3380"
+      },
+      {
+        "name": "WAZ",
+        "percentage": 0.005969939675252163,
+        "color": "#35FC95",
+        "fill": "#35FC95"
+      },
+      {
+        "name": "CLPD",
+        "percentage": 0,
+        "color": "#546E7A",
+        "fill": "#546E7A"
+      },
+      {
+        "name": "ZURF",
+        "percentage": 0,
+        "color": "#7D33FF",
+        "fill": "#7D33FF"
+      },
+      {
+        "name": "Reward on base.clalm.org",
+        "percentage": 0,
+        "color": "#35FC95",
+        "fill": "#35FC95"
+      }
+    ],
+    "totalNetWorth": 6.102101328187854,
+    "metrics": [
+      {
+        "label": "Market Cap",
+        "value": "38220.71"
+      },
+      {
+        "label": "Your Holdings",
+        "value": "0"
+      },
+      {
+        "label": "Your Market Value",
+        "value": "0"
+      }
+    ],
+    "treasuryAddress": "0x863B8801D8125D2BA10b53268fd6313043843536",
+    "tokenAddress": "0x0c6e8de8d2e9e1727cd85fe682ee01c2195417f4",
+    "tokenImage": "https://www.clanker.world/_next/image?url=https%3A%2F%2Fimagedelivery.net%2FBXluQx4ige9GuW0Ia56BHw%2Fa2b0cd06-942e-45e3-cef5-4c49dc391900%2Foriginal&w=128&q=75",
+    "tokenSymbol": "CHILLBULL",
+    "tokenDecimals": 18,
+    "tokenTotalSupply": 100000000000,
+    "poolAddress": "0xda40f85288f6d88280975cb89a88cdf4577bda9b",
+    "updatedAt": "2025-01-06T22:23:48.376Z"
   }
 }

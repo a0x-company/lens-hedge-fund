@@ -71,7 +71,7 @@ export function PerformanceSection({
 
   useEffect(() => {
     if (tokenBalance.data) {
-      metrics[3].value = tokenBalanceFormatted.toString();
+      metrics[1].value = tokenBalanceFormatted.toString();
     }
   }, [tokenBalance, tokenBalanceFormatted, metrics]);
 
