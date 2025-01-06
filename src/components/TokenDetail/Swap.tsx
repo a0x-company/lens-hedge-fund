@@ -20,7 +20,7 @@ import { useAccount, useReadContracts } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 
 // viem
-import { erc20Abi, formatUnits } from "viem";
+import { erc20Abi, formatUnits, parseEther, parseUnits } from "viem";
 import addresses from "@/constants/address";
 import { useApprove } from "@/hooks/useApprove";
 import { useSwap } from "@/hooks/useSwap";
@@ -154,7 +154,9 @@ export function Swap({
     isLoading: isLoadingSwap,
   } = useSwap(
     addresses.deployerAddress as `0x${string}`,
-    currentMode === "buy" ? BigInt(ethAmount) : BigInt(tokenAmount)
+    currentMode === "buy" 
+      ? parseEther(ethAmount)
+      : parseUnits(tokenAmount, 18)
   );
 
   const handleSwap = async () => {

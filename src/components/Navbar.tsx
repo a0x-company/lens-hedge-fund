@@ -4,10 +4,12 @@ import React from "react";
 import { Wallet } from "lucide-react";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
+import { useRouter } from "next/navigation";
 
 export const Navbar: React.FC = () => {
   const { open } = useAppKit();
   const { isConnected, address } = useAccount();
+  const router = useRouter();
 
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200">
@@ -19,7 +21,7 @@ export const Navbar: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => open()}
+              onClick={() => router.push("/create-fund")}
               className="bg-brand-gray text-white px-4 py-2 rounded-lg hover:bg-brand-gray/80 transition-all shadow-md hover:shadow-lg"
             >
               Create Fund
