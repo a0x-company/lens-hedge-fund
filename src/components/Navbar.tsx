@@ -12,11 +12,9 @@ import { Wallet } from "lucide-react";
 // Wagmi
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 
-
-
 export const Navbar: React.FC = () => {
   const router = useRouter();
-  
+
   const { open } = useAppKit();
   const { address, isConnected } = useAppKitAccount();
 
@@ -24,8 +22,10 @@ export const Navbar: React.FC = () => {
     <nav className="bg-white shadow-lg border-b border-gray-200">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
-
-          <button className="flex items-center space-x-2" onClick={() => router.push("/")}>
+          <button
+            className="flex items-center space-x-2"
+            onClick={() => router.push("/")}
+          >
             <Wallet className="w-8 h-8 text-brand-green-light" />
             <span className="text-xl font-bold">Capital Friends</span>
           </button>

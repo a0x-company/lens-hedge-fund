@@ -21,7 +21,7 @@ import { useAccount, useReadContract, useReadContracts } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 
 // viem
-import { erc20Abi, formatUnits, parseUnits } from "viem";
+import { erc20Abi, formatUnits, parseEther, parseUnits } from "viem";
 import addresses from "@/constants/address";
 import { useApprove } from "@/hooks/useApprove";
 import { useSwap } from "@/hooks/useSwap";
