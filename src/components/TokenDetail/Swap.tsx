@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // react
 import { useMemo, useState } from "react";
 
@@ -179,6 +180,7 @@ export function Swap({
 
   const amountIn =
     currentMode === "buy" ? wethAmountFormatted : tokenAmountFormatted;
+    
   const tokenIn =
     currentMode === "buy"
       ? (addresses.wethAddress as `0x${string}`)
@@ -194,11 +196,9 @@ export function Swap({
     isLoading: isLoadingSwap,
   } = useSwap(
     addresses.deployerAddress as `0x${string}`,
-    amountIn,
-    tokenIn,
-    tokenOut,
-    isApproved,
-    () => setIsSwapped(true)
+    currentMode === "buy" 
+      ? parseEther(ethAmount)
+      : parseUnits(tokenAmount, 18)
   );
 
   const handleSwap = async () => {

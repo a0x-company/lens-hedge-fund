@@ -1,12 +1,16 @@
 'use client'
 
+
+//
 import { useState } from 'react'
+
 import { useLensAuth } from '@/hooks/useLensAuth'
 import { useAccount } from 'wagmi'
 import { useAppKit } from '@reown/appkit/react'
 import { useToast } from '@/components/shadcn/use-toast'
 import { Textarea } from '@/components/shadcn/textarea'
 import { Button } from '@/components/shadcn/button'
+// Icons
 import { Loader2 } from 'lucide-react'
 
 interface CommentsSectionProps {
