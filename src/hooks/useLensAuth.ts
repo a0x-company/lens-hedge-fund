@@ -16,6 +16,11 @@ interface Profile {
   }
 }
 
+interface ApiError {
+  error: string
+  status?: number
+}
+
 export function useLensAuth() {
   const { address } = useAccount()
   const { signMessageAsync } = useSignMessage()
@@ -23,58 +28,163 @@ export function useLensAuth() {
   const [loading, setLoading] = useState(false)
   const { toast } = useToast()
 
+  const handleApiResponse = async <T,>(response: Response): Promise<T> => {
+    const data = await response.json()
+    
+    if (!response.ok) {
+      // Manejar errores específicos
+      if (data.error === 'No default profile found') {
+        toast({
+          title: "No Lens Profile",
+          description: "You need to create a Lens profile first",
+          variant: "destructive"
+        })
+        throw new Error('NO_PROFILE')
+      }
+      
+      if (response.status === 401) {
+        toast({
+          title: "Authentication Error",
+          description: "Please reconnect your wallet",
+          variant: "destructive"
+        })
+        throw new Error('UNAUTHORIZED')
+      }
+
+      toast({
+        title: "Error",
+        description: data.error || "Something went wrong",
+        variant: "destructive"
+      })
+      throw new Error(data.error || 'API_ERROR')
+    }
+
+    return data as T
+  }
+
+  const getChallenge = async (address: string) => {
+    const response = await fetch('/api/lens/challenge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ address })
+    })
+    
+    return handleApiResponse<{
+      text: string
+      id: string
+      profile: Profile
+    }>(response)
+  }
+
+  const authenticateWithLens = async (params: {
+    id: string
+    signature: string
+    address: string
+  }) => {
+    const response = await fetch('/api/lens/authenticate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params)
+    })
+
+    return handleApiResponse<{
+      success: boolean
+      needsSignless: boolean
+      signlessData?: {
+        id: string
+        typedData: any
+      }
+      profile: Profile
+    }>(response)
+  }
+
+  const broadcastSignless = async (params: {
+    id: string
+    signature: string
+  }) => {
+    const response = await fetch('/api/lens/authenticate', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params)
+    })
+
+    return handleApiResponse<{
+      success: boolean
+      txHash?: string
+      txId?: string
+    }>(response)
+  }
+
   const authenticate = useCallback(async () => {
-    if (!address) return
+    if (!address) {
+      toast({
+        title: "Error",
+        description: "Please connect your wallet first",
+        variant: "destructive"
+      })
+      return
+    }
 
     try {
       setLoading(true)
       
       // 1. Obtener el challenge
-      const challengeRes = await fetch('/api/lens/challenge', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ address })
-      })
-      
-      const { text, id } = await challengeRes.json()
+      const challengeData = await getChallenge(address)
       
       // 2. Firmar el mensaje
-      const signature = await signMessageAsync({ message: text })
+      const signature = await signMessageAsync({ 
+        message: challengeData.text 
+      })
       
-      // 3. Verificar y autenticar
-      const authRes = await fetch('/api/lens/authenticate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, signature, address })
+      // 3. Autenticar con Lens
+      const authData = await authenticateWithLens({
+        id: challengeData.id,
+        signature,
+        address
       })
 
-      const data = await authRes.json()
+      // 4. Manejar signless si es necesario
+      if (authData.needsSignless && authData.signlessData) {
+        toast({
+          title: "Action Required",
+          description: "Please sign to enable gasless interactions"
+        })
 
-      if (data.error) {
-        throw new Error(data.error)
+        const signlessSignature = await signMessageAsync({
+          message: JSON.stringify(authData.signlessData.typedData)
+        })
+
+        await broadcastSignless({
+          id: authData.signlessData.id,
+          signature: signlessSignature
+        })
+
+        toast({
+          title: "Success",
+          description: "Gasless mode enabled successfully!"
+        })
       }
 
-      if (data.needsSignless) {
-        // Manejar la activación de signless si es necesario
-        // Esto es opcional y puedes implementarlo más tarde
-      }
-
-      setProfile(data.profile)
+      setProfile(authData.profile)
       toast({
         title: "Connected to Lens",
-        description: `Welcome ${data.profile.handle}!`
+        description: `Welcome ${authData.profile.handle}!`
       })
 
-      return data.profile
+      return authData.profile
 
     } catch (error) {
-      console.error('Error authenticating with Lens:', error)
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to connect to Lens",
-        variant: "destructive"
-      })
-      throw error
+      if (error instanceof Error) {
+        // No mostramos toast para errores ya manejados
+        if (!['NO_PROFILE', 'UNAUTHORIZED'].includes(error.message)) {
+          toast({
+            title: "Error",
+            description: "Failed to connect to Lens",
+            variant: "destructive"
+          })
+        }
+      }
+      return null
     } finally {
       setLoading(false)
     }
@@ -83,6 +193,7 @@ export function useLensAuth() {
   return {
     authenticate,
     profile,
-    loading
+    loading,
+    isAuthenticated: !!profile
   }
 }
