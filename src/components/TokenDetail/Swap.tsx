@@ -169,8 +169,6 @@ export function Swap({
     () => setIsApproved(true)
   );
 
-  console.log("waitApprove", waitApprove);
-
   const handleApprove = async () => {
     if (simulateApprove.data?.request != null) {
       writeApprove?.writeContract(simulateApprove?.data?.request);

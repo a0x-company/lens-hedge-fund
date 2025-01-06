@@ -230,13 +230,20 @@
       { "internalType": "string", "name": "imageURL", "type": "string" },
       {
         "internalType": "address",
-        "name": "address_treasure",
+        "name": "address_treasury",
         "type": "address"
       }
     ],
-    "name": "deployToken",
+    "name": "deployFunds",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fee_address",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -245,6 +252,17 @@
     "outputs": [
       { "internalType": "address[]", "name": "", "type": "address[]" }
     ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "token0", "type": "address" },
+      { "internalType": "address", "name": "token1", "type": "address" },
+      { "internalType": "uint24", "name": "fee", "type": "uint24" }
+    ],
+    "name": "getPoolAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -261,7 +279,7 @@
       { "internalType": "string", "name": "imageURL", "type": "string" },
       {
         "internalType": "address",
-        "name": "addressTreasure",
+        "name": "addressTreasury",
         "type": "address"
       }
     ],
@@ -278,13 +296,6 @@
     "name": "initializePool",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nico_address_treasure",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -348,7 +359,7 @@
       { "internalType": "string", "name": "imageURL", "type": "string" },
       {
         "internalType": "address",
-        "name": "addressTreasure",
+        "name": "addressTreasury",
         "type": "address"
       }
     ],
