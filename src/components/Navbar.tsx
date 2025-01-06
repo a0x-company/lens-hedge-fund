@@ -2,12 +2,12 @@
 
 import React from "react";
 import { Wallet } from "lucide-react";
-import { useAppKit } from "@reown/appkit/react";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 
 export const Navbar: React.FC = () => {
   const { open } = useAppKit();
-  const { isConnected, address } = useAccount();
+  const { address, isConnected } = useAppKitAccount();
 
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200">
