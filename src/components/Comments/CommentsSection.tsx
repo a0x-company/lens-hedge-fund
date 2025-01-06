@@ -1,93 +1,89 @@
-'use client'
+"use client";
 
-
-//
-import { useState } from 'react'
-
-import { useLensAuth } from '@/hooks/useLensAuth'
-import { useAccount } from 'wagmi'
-import { useAppKit } from '@reown/appkit/react'
-import { useToast } from '@/components/shadcn/use-toast'
-import { Textarea } from '@/components/shadcn/textarea'
-import { Button } from '@/components/shadcn/button'
-// Icons
-import { Loader2 } from 'lucide-react'
+import { useState } from "react";
+import { useLensAuth } from "@/hooks/useLensAuth";
+import { useAccount } from "wagmi";
+import { useAppKit } from "@reown/appkit/react";
+import { useToast } from "@/components/shadcn/use-toast";
+import { Button } from "@/components/shadcn/button";
+import { Loader2 } from "lucide-react";
+import { Textarea } from "../shadcn/textarea";
 
 interface CommentsSectionProps {
-  tokenAddress: string
+  tokenAddress: string;
 }
 
 export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
-  const { open } = useAppKit()
-  const { isConnected } = useAccount()
-  const { authenticate, profile, loading: authLoading } = useLensAuth()
-  const { toast } = useToast()
-  
-  const [comment, setComment] = useState('')
-  const [isPosting, setIsPosting] = useState(false)
-  const [comments, setComments] = useState<any[]>([]) // TODO: Tipado correcto
-  const [loadingComments, setLoadingComments] = useState(false)
+  const { open } = useAppKit();
+  const { isConnected } = useAccount();
+  const { authenticate, profile, loading: authLoading } = useLensAuth();
+  const { toast } = useToast();
+
+  const [comment, setComment] = useState("");
+  const [isPosting, setIsPosting] = useState(false);
+  const [comments, setComments] = useState<any[]>([]); // TODO: Tipado correcto
+  const [loadingComments, setLoadingComments] = useState(false);
 
   const handleConnect = async () => {
     try {
       if (!isConnected) {
-        open()
+        open();
       } else if (!profile) {
-        await authenticate()
+        await authenticate();
       }
     } catch (error) {
-      console.error('Error connecting:', error)
+      console.error("Error connecting:", error);
       toast({
         title: "Error",
         description: "Failed to connect. Please try again.",
-        variant: "destructive"
-      })
+        variant: "destructive",
+      });
     }
-  }
+  };
 
   const handleSubmitComment = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!comment.trim() || !profile || isPosting) return
+    e.preventDefault();
+    if (!comment.trim() || !profile || isPosting) return;
 
     try {
-      setIsPosting(true)
-      const response = await fetch('/api/lens/post', {
-        method: 'POST',
+      setIsPosting(true);
+      const response = await fetch("/api/lens/post", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           content: comment.trim(),
-          tokenAddress
-        })
-      })
+          tokenAddress,
+        }),
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to post comment')
+        throw new Error(data.error || "Failed to post comment");
       }
 
       toast({
         title: "Success",
-        description: "Comment posted successfully!"
-      })
+        description: "Comment posted successfully!",
+      });
 
-      setComment('')
+      setComment("");
       // TODO: Actualizar lista de comentarios
       // await loadComments()
-
     } catch (error) {
-      console.error('Error posting comment:', error)
+      console.error("Error posting comment:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to post comment",
-        variant: "destructive"
-      })
+        description:
+          error instanceof Error ? error.message : "Failed to post comment",
+        variant: "destructive",
+      });
     } finally {
-      setIsPosting(false)
+      setIsPosting(false);
     }
-  }
+  };
 
   // TODO: Implementar carga de comentarios
   /*
@@ -115,7 +111,7 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-lg font-semibold">Comments</h3>
-        
+
         {authLoading ? (
           <Button disabled variant="outline" size="sm">
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -124,21 +120,17 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
         ) : profile ? (
           <div className="flex items-center gap-2">
             {profile.picture && (
-              <img 
-                src={profile.picture} 
-                alt={profile.handle} 
+              <img
+                src={profile.picture}
+                alt={profile.handle}
                 className="w-8 h-8 rounded-full"
               />
             )}
             <span className="font-medium">{profile.handle}</span>
           </div>
         ) : (
-          <Button 
-            onClick={handleConnect}
-            variant="default"
-            size="sm"
-          >
-            {isConnected ? 'Connect Lens' : 'Connect Wallet'}
+          <Button onClick={handleConnect} variant="default" size="sm">
+            {isConnected ? "Connect Lens" : "Connect Wallet"}
           </Button>
         )}
       </div>
@@ -148,7 +140,9 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
         <form onSubmit={handleSubmitComment} className="space-y-4">
           <Textarea
             value={comment}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setComment(e.target.value)
+            }
             placeholder="Write your comment..."
             className="min-h-[100px]"
           />
@@ -163,7 +157,7 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
                 Posting...
               </>
             ) : (
-              'Post Comment'
+              "Post Comment"
             )}
           </Button>
         </form>
@@ -177,10 +171,7 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
           </div>
         ) : comments.length > 0 ? (
           comments.map((comment) => (
-            <div 
-              key={comment.id} 
-              className="p-4 border rounded-lg"
-            >
+            <div key={comment.id} className="p-4 border rounded-lg">
               {/* TODO: Implementar vista de comentario */}
             </div>
           ))
@@ -191,5 +182,5 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
         )}
       </div>
     </section>
-  )
+  );
 }

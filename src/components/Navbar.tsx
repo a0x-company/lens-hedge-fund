@@ -9,20 +9,16 @@ import { useRouter } from "next/navigation";
 // Icons
 import { Wallet } from "lucide-react";
 
-// AppKit
-import { useAppKit } from "@reown/appkit/react";
-
 // Wagmi
-import { useAccount } from "wagmi";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+
 
 
 export const Navbar: React.FC = () => {
   const router = useRouter();
-
-  const { open } = useAppKit();  
-
-  const { isConnected, address } = useAccount();
   
+  const { open } = useAppKit();
+  const { address, isConnected } = useAppKitAccount();
 
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200">
