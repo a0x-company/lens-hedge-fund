@@ -1,10 +1,20 @@
 "use client";
 
+// React
 import React from "react";
-import { Wallet } from "lucide-react";
-import { useAppKit } from "@reown/appkit/react";
-import { useAccount } from "wagmi";
+
+// Next
 import { useRouter } from "next/navigation";
+
+// Icons
+import { Wallet } from "lucide-react";
+
+// AppKit
+import { useAppKit } from "@reown/appkit/react";
+
+// Wagmi
+import { useAccount } from "wagmi";
+
 
 export const Navbar: React.FC = () => {
   const { open } = useAppKit();
