@@ -14,16 +14,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shadcn/tabs";
 import { cn } from "@/lib/utils";
 
 // wagmi
-import { useAccount, useReadContracts } from "wagmi";
+import { useAccount, useReadContract, useReadContracts } from "wagmi";
 
 // react-query
 import { useQuery } from "@tanstack/react-query";
 
 // viem
-import { erc20Abi, formatUnits } from "viem";
+import { erc20Abi, formatUnits, parseUnits } from "viem";
 import addresses from "@/constants/address";
 import { useApprove } from "@/hooks/useApprove";
 import { useSwap } from "@/hooks/useSwap";
+import { base } from "viem/chains";
 
 const getPrices = async (poolAddress: string) => {
   try {
@@ -103,9 +104,7 @@ export function Swap({
     queryKey: ["priceToken", tokenAddress],
     queryFn: () => getPrices(poolAddress),
     enabled: !!poolAddress,
-    refetchInterval: 0,
   });
-  console.log(priceToken);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -128,19 +127,49 @@ export function Swap({
   };
 
   /* Swap */
+  const [isApproved, setIsApproved] = useState(false);
+  const [isSwapped, setIsSwapped] = useState(false);
+  const { data: allowance } = useReadContract({
+    address: tokenAddress as `0x${string}`,
+    chainId: base.id,
+    abi: erc20Abi,
+    functionName: "allowance",
+    args: [
+      address!,
+      currentMode === "buy"
+        ? (addresses.wethAddress as `0x${string}`)
+        : (tokenAddress as `0x${string}`),
+    ],
+    query: {
+      enabled: !!address,
+    },
+  });
+
+  const tokenAmountFormatted = parseUnits(tokenAmount, 18);
+  const wethAmountFormatted = parseUnits(ethAmount, 18);
+
+  const isAllowanceSufficient =
+    currentMode === "buy"
+      ? allowance! < wethAmountFormatted
+      : allowance! < tokenAmountFormatted;
+
   const {
     write: writeApprove,
     isLoading: isLoadingApprove,
     simulate: simulateApprove,
+    wait: waitApprove,
   } = useApprove(
     currentMode === "buy"
       ? (addresses.wethAddress as `0x${string}`)
       : (tokenAddress as `0x${string}`),
     name,
     addresses.deployerAddress as `0x${string}`,
-    true,
-    BigInt(parseFloat(tokenAmount) * 1e18)
+    isAllowanceSufficient,
+    currentMode === "buy" ? wethAmountFormatted : tokenAmountFormatted,
+    () => setIsApproved(true)
   );
+
+  console.log("waitApprove", waitApprove);
 
   const handleApprove = async () => {
     if (simulateApprove.data?.request != null) {
@@ -148,15 +177,28 @@ export function Swap({
     }
   };
 
+  const amountIn =
+    currentMode === "buy" ? wethAmountFormatted : tokenAmountFormatted;
+  const tokenIn =
+    currentMode === "buy"
+      ? (addresses.wethAddress as `0x${string}`)
+      : (tokenAddress as `0x${string}`);
+  const tokenOut =
+    currentMode === "buy"
+      ? (tokenAddress as `0x${string}`)
+      : (addresses.wethAddress as `0x${string}`);
+
   const {
     write: writeSwap,
     simulate: simulateSwap,
     isLoading: isLoadingSwap,
   } = useSwap(
     addresses.deployerAddress as `0x${string}`,
-    currentMode === "buy"
-      ? BigInt(parseFloat(ethAmount) * 1e18)
-      : BigInt(parseFloat(tokenAmount) * 1e18) // TODO: change to decimals of token
+    amountIn,
+    tokenIn,
+    tokenOut,
+    isApproved,
+    () => setIsSwapped(true)
   );
 
   const handleSwap = async () => {
@@ -244,9 +286,26 @@ export function Swap({
               <p className="text-[18px] font-[700] text-secondary">{name}</p>
             </div>
           </div>
-          <button className="bg-brand-green-light hover:bg-brand-green-light/80 transition-colors text-black px-4 py-2 rounded-md w-full">
-            BUY {name}
-          </button>
+          {isLoadingApprove || isLoadingSwap ? (
+            <p className="bg-brand-green-light hover:bg-brand-green-light/80 transition-colors text-black px-4 py-2 rounded-md w-full opacity-50 cursor-not-allowed text-center">
+              Loading...
+            </p>
+          ) : (
+            <button
+              onClick={() => {
+                if (isApproved && !isSwapped) {
+                  handleSwap();
+                } else {
+                  handleApprove();
+                }
+              }}
+              disabled={isLoadingApprove || isLoadingSwap}
+              className="bg-brand-green-light hover:bg-brand-green-light/80 transition-colors text-black px-4 py-2 rounded-md w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isApproved && !isSwapped ? "BUY" : "APPROVE"} {name}
+              {isApproved && isSwapped ? "Swapped Successfully" : ""}
+            </button>
+          )}
         </TabsContent>
         <TabsContent value="sell" className="flex flex-col items-center gap-4">
           <div className="flex justify-between gap-2 w-full mt-4">
@@ -316,8 +375,20 @@ export function Swap({
               <p className="text-[18px] font-[700] text-secondary">WETH</p>
             </div>
           </div>
-          <button className="bg-brand-green-light hover:bg-brand-green-light/80 transition-colors text-black px-4 py-2 rounded-md w-full">
-            SELL {name}
+          <button
+            onClick={() => {
+              if (isApproved && !isSwapped) {
+                handleSwap();
+              } else {
+                handleApprove();
+              }
+            }}
+            disabled={isLoadingApprove || isLoadingSwap}
+            className="bg-brand-green-light hover:bg-brand-green-light/80 transition-colors text-black px-4 py-2 rounded-md w-full disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isApproved && !isSwapped ? "SELL" : "APPROVE"} {name}
+            {isLoadingApprove || isLoadingSwap ? "Loading..." : ""}
+            {isApproved && isSwapped ? "Swapped Successfully" : ""}
           </button>
         </TabsContent>
       </Tabs>

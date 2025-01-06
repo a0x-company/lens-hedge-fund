@@ -14,16 +14,11 @@ const getPrices = async (poolAddress: string) => {
     provider
   );
   try {
-    console.log("poolContract", poolContract);
     const slot0 = await poolContract.slot0();
-    console.log("slot0", slot0);
     const sqrtPriceX96 = slot0.sqrtPriceX96;
-    console.log("sqrtPriceX96", sqrtPriceX96);
     const priceTokenxWeth =
-      (Number(sqrtPriceX96) / 2 ** 96) ** 2 * 10 ** (18 - 6);
+      (Number(sqrtPriceX96) / 2 ** 96) ** 2 * 10 ** (18 - 18);
     const priceWethxToken = 1 / priceTokenxWeth;
-    console.log("Price Token/WETH:", priceTokenxWeth.toFixed(3));
-    console.log("Price WETH/Token:", priceWethxToken.toFixed(3));
     return { priceTokenxWeth, priceWethxToken };
   } catch (error) {
     console.error("Error al obtener la información del token:", error);

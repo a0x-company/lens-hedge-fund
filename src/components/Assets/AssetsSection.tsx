@@ -10,10 +10,14 @@ import { ExternalLink } from "lucide-react";
 interface AssetsSectionProps {
   assets: Asset[];
   treasuryAddress: string;
+  totalNetWorth: number;
 }
 
-export function AssetsSection({ assets, treasuryAddress }: AssetsSectionProps) {
-  const netAssetValue = 0; // TODO: get from market data
+export function AssetsSection({
+  assets,
+  treasuryAddress,
+  totalNetWorth,
+}: AssetsSectionProps) {
   return (
     <section className="p-6 bg-white shadow-lg rounded-lg border border-gray-200">
       <div className="flex justify-between items-center mb-4">
@@ -26,7 +30,8 @@ export function AssetsSection({ assets, treasuryAddress }: AssetsSectionProps) {
       </div>
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm text-gray-500">
-          Net Asset Value: <span className="font-bold">${netAssetValue}</span>
+          Net Asset Value:{" "}
+          <span className="font-bold">${totalNetWorth.toFixed(2)}</span>
         </p>
         <Link
           href={`https://basescan.org/address/${treasuryAddress}`}
