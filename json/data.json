@@ -214,12 +214,6 @@
         "fill": "#1E88E5"
       },
       {
-        "name": "MOXIE",
-        "percentage": 7.522020920673295,
-        "color": "#33FCFF",
-        "fill": "#33FCFF"
-      },
-      {
         "name": "BASED",
         "percentage": 3.818100592480963,
         "color": "#43A047",
@@ -248,25 +242,13 @@
         "percentage": 0,
         "color": "#546E7A",
         "fill": "#546E7A"
-      },
-      {
-        "name": "ZURF",
-        "percentage": 0,
-        "color": "#7D33FF",
-        "fill": "#7D33FF"
-      },
-      {
-        "name": "Reward on base.clalm.org",
-        "percentage": 0,
-        "color": "#35FC95",
-        "fill": "#35FC95"
       }
     ],
     "totalNetWorth": 6.102101328187854,
     "metrics": [
       {
         "label": "Market Cap",
-        "value": "38220.71"
+        "value": "10000"
       },
       {
         "label": "Your Holdings",
