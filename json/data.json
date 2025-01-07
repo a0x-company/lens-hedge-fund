@@ -185,8 +185,8 @@
     "poolAddress": "0xda40f85288f6d88280975cb89a88cdf4577bda9b",
     "updatedAt": "2025-01-06T22:23:48.376Z"
   },
-  "0x6914c5b9ab9b49bcf84f980ff773bf2ae6186a6d": {
-    "name": "test",
+  "0xe37eC651cfDc6E47f4F1D5Ad55747EC5375D2ABb": {
+    "name": "Capital Test 2",
     "description": "Chill Bull is a token that is used to reward the community for their contributions to the project.",
     "stats": [
       {
@@ -278,11 +278,11 @@
       }
     ],
     "treasuryAddress": "0x863B8801D8125D2BA10b53268fd6313043843536",
-    "tokenAddress": "0x0c6e8de8d2e9e1727cd85fe682ee01c2195417f4",
-    "tokenImage": "https://www.clanker.world/_next/image?url=https%3A%2F%2Fimagedelivery.net%2FBXluQx4ige9GuW0Ia56BHw%2Fa2b0cd06-942e-45e3-cef5-4c49dc391900%2Foriginal&w=128&q=75",
-    "tokenSymbol": "CHILLBULL",
+    "tokenAddress": "0xe37eC651cfDc6E47f4F1D5Ad55747EC5375D2ABb",
+    "tokenImage": "https://pbs.twimg.com/profile_images/1858644018655100928/NOO-S785_400x400.jpg",
+    "tokenSymbol": "CAPITAL test 2",
     "tokenDecimals": 18,
-    "tokenTotalSupply": 100000000000,
+    "tokenTotalSupply": 1000000000000000000000000000,
     "poolAddress": "0xda40f85288f6d88280975cb89a88cdf4577bda9b",
     "updatedAt": "2025-01-06T22:23:48.376Z"
   }

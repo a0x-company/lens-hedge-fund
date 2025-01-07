@@ -1,5 +1,5 @@
 const addresses = {
-  deployerAddress: "0xa660002086c4d720bE4F1Af27Fc423431b1cf46b",
+  deployerAddress: "0x873d5852894f68D6343d0E673EaE6486E317D246",
   wethAddress: "0x4200000000000000000000000000000000000006",
 };
 
