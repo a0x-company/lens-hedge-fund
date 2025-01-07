@@ -27,7 +27,7 @@ export const Navbar: React.FC = () => {
             onClick={() => router.push("/")}
           >
             <Wallet className="w-8 h-8 text-brand-green-light" />
-            <span className="text-xl font-bold">Capital Friends</span>
+            <span className="text-xl font-bold">Capital Frens</span>
           </button>
 
           <div className="flex items-center gap-2">

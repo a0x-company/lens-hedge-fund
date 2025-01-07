@@ -15,6 +15,14 @@ export const metadata = {
   icons: ['"https://anoncapital.xyz/assets/anoncapital-logo.svg"'],
 };
 
+const lensSepolia = {
+  chainId: 37111,
+  name: "Lens Network Sepolia Testnet",
+  currency: "GRASS",
+  explorerUrl: "https://block-explorer.testnet.lens.dev",
+  rpcUrl: "https://rpc.testnet.lens.dev",
+} as any;
+
 export const wagmiAdapter = new WagmiAdapter({
   networks: [base],
   projectId,
@@ -22,7 +30,7 @@ export const wagmiAdapter = new WagmiAdapter({
 
 createAppKit({
   adapters: [wagmiAdapter],
-  networks: [base],
+  networks: [lensSepolia],
   metadata: metadata,
   projectId,
   features: {

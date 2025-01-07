@@ -1,8 +1,10 @@
 "use client";
 
+// react
 import { ReactNode } from "react";
-import { base } from "@reown/appkit/networks";
+
 import { metadata, projectId, wagmiAdapter } from "@/config";
+
 import { createAppKit } from "@reown/appkit/react";
 import { State, WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -11,9 +13,17 @@ const queryClient = new QueryClient();
 
 if (!projectId) throw new Error("Project ID is not defined in context");
 
+const lensSepolia = {
+  chainId: 37111,
+  name: "Lens Network Sepolia Testnet",
+  currency: "GRASS",
+  explorerUrl: "https://block-explorer.testnet.lens.dev",
+  rpcUrl: "https://rpc.testnet.lens.dev",
+} as any;
+
 export const appKit = createAppKit({
   adapters: [wagmiAdapter],
-  networks: [base],
+  networks: [lensSepolia],
   metadata: metadata,
   projectId,
   features: {
