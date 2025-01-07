@@ -112,6 +112,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const tokenName = searchParams.get("tokenName")?.toLowerCase();
   const tokenAddress = searchParams.get("tokenAddress")?.toLowerCase();
+
   if (!tokenName || !tokenAddress) {
     return NextResponse.json(
       { error: FundTokenDataError.TOKEN_ADDRESS_REQUIRED },
@@ -219,10 +220,13 @@ export async function GET(req: Request) {
           jsonDirectory + "/data.json",
           JSON.stringify(allFundTokenData, null, 2)
         );
-        return NextResponse.json(tokenDataToWriteForFile, { status: 200 });
+        return NextResponse.json(tokenDataToWriteForFile);
       } catch (error) {
         console.error("Error writing token data to file:", error);
-        return { error: "Error writing token data to file" };
+        return NextResponse.json(
+          { error: "Error writing token data to file" },
+          { status: 500 }
+        );
       }
     }
 
@@ -286,15 +290,18 @@ export async function GET(req: Request) {
             jsonDirectory + "/data.json",
             JSON.stringify(tokenDataToWriteForFile, null, 2)
           );
-          return NextResponse.json(tokenDataToWriteForFile, { status: 200 });
+          return NextResponse.json(tokenDataToWriteForFile);
         } catch (error) {
           console.error("Error writing token data to file:", error);
-          return { error: "Error writing token data to file" };
+          return NextResponse.json(
+            { error: "Error writing token data to file" },
+            { status: 500 }
+          );
         }
       }
     }
 
-    return NextResponse.json(tokenData, { status: 200 });
+    return NextResponse.json(tokenData);
   } catch (error) {
     console.error("Error in GET /api/fund-token-data", error);
     return NextResponse.json(

@@ -16,7 +16,11 @@ import { useCreateFund } from "@/hooks/useCreateFund";
 // Shadcn
 import { useToast } from "@/components/shadcn/use-toast";
 
+// Icons
 import { CheckCircle } from "lucide-react";
+
+// Wagmi
+import { useAccount } from "wagmi";
 
 export default function CreateFund() {
   const router = useRouter();
@@ -24,6 +28,8 @@ export default function CreateFund() {
   const { toast } = useToast();
 
   const { createFund, isPending, isSuccess, status } = useCreateFund();
+
+  const { address } = useAccount();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -112,6 +118,18 @@ export default function CreateFund() {
                   {formData.symbol}
                 </p>
               </div>
+
+              <button
+                className="bg-emerald-500 text-white px-4 py-2 rounded-lg"
+                onClick={() => {
+                  window.open(
+                    `https://block-explorer.testnet.lens.dev/address/${address}`,
+                    "_blank"
+                  );
+                }}
+              >
+                Go to Lens explorer to see your fund
+              </button>
             </div>
           </div>
         </div>
