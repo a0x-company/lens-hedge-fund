@@ -67,15 +67,26 @@ const sourceId = 1; // mainnet
 // })
 
 const lensSepolia = {
-  chainId: 37111,
+  id: 37111,
   name: "Lens Network Sepolia Testnet",
-  currency: "GRASS",
-  explorerUrl: "https://block-explorer.testnet.lens.dev",
-  rpcUrl: "https://rpc.testnet.lens.dev",
-} as any;
+  nativeCurrency: {
+    name: "GRASS",
+    symbol: "GRASS",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: { http: ["https://rpc.testnet.lens.dev"] },
+  },
+  blockExplorers: {
+    default: {
+      name: "Explorer",
+      url: "https://block-explorer.testnet.lens.dev",
+    },
+  },
+} as const;
 
 export const wagmiAdapter = new WagmiAdapter({
-  networks: [base],
+  networks: [base, lensSepolia],
   projectId,
 });
 
