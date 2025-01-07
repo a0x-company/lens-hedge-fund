@@ -9,10 +9,10 @@ export const projectId = "49c1dac0343e834e4d7785679951c3cc"; // process.env.NEXT
 if (!projectId) throw new Error("Project ID is not defined in config");
 
 export const metadata = {
-  name: "AnonCapital",
-  description: "Tokens Funded",
-  url: "https://anoncapital.xyz/",
-  icons: ['"https://anoncapital.xyz/assets/anoncapital-logo.svg"'],
+  name: "Lens Hedge Fund",
+  description: "Lens Hedge Fund",
+  url: "https://lens-hedge-fund.vercel.app",
+  icons: ['"https://lens-hedge-fund.vercel.app/assets/anoncapital-logo.svg"'],
 };
 
 const lensSepolia = {
