@@ -149,15 +149,15 @@ export async function GET(req: Request) {
       try {
         // const tokenInfo = await getTokenInfo(tokenAddress);
         const tokenInfo = {
-          name: "ChillBull",
+          name: "Capital Test 2",
           description:
-            "Chill Bull is a token that is used to reward the community for their contributions to the project.",
+            "Capital Test 2 is a token that is used to reward the community for their contributions to the project.",
           treasuryAddress: "0x863B8801D8125D2BA10b53268fd6313043843536",
           poolAddress: "0xda40f85288f6d88280975cb89a88cdf4577bda9b",
-          totalSupply: 100000000000,
+          totalSupply: 1000000000000000000000000000,
           imageURL:
-            "https://www.clanker.world/_next/image?url=https%3A%2F%2Fimagedelivery.net%2FBXluQx4ige9GuW0Ia56BHw%2Fa2b0cd06-942e-45e3-cef5-4c49dc391900%2Foriginal&w=128&q=75",
-          symbol: "CHILLBULL",
+            "https://pbs.twimg.com/profile_images/1858644018655100928/NOO-S785_400x400.jpg",
+          symbol: "CAPITAL test 2",
           decimals: 18,
         };
         const assets = await assetsFromTreasury(tokenInfo.treasuryAddress);
