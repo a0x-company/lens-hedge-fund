@@ -30,7 +30,7 @@ export const wagmiAdapter = new WagmiAdapter({
 
 createAppKit({
   adapters: [wagmiAdapter],
-  networks: [lensSepolia],
+  networks: [base],
   metadata: metadata,
   projectId,
   features: {
