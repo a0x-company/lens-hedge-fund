@@ -20,7 +20,8 @@ export function Chart({ tokenAddress }: ChartProps) {
       className={size}
       id="dexscreener-embed"
       title="Dexscreener Embed"
-      src={parseTokenAddress(tokenAddress)}
+      // src={parseTokenAddress(tokenAddress)}
+      src={parseTokenAddress("0x2A3De8d04aDca409741A0b304d20aaeFc4B4eD78")}
       allow="clipboard-write"
       allowFullScreen
     ></iframe>
