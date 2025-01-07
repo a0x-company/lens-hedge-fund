@@ -11,12 +11,12 @@ export default function Home() {
 
   const funds = [
     {
-      name: "test",
-      symbol: "TEST1",
+      name: "Capital Test 2",
+      symbol: "CAPITAL test 2",
       price: "$1",
       change: "",
       marketCap: "$10000",
-      address: "0x6914c5b9ab9b49bcf84f980ff773bf2ae6186a6d",
+      address: "0xe37eC651cfDc6E47f4F1D5Ad55747EC5375D2ABb",
     },
   ];
 
