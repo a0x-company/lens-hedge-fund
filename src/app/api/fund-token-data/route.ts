@@ -105,7 +105,7 @@ const calculateTotalNetWorth = (
     usd_value: number;
   }[]
 ) => {
-  return assets.reduce((acc, asset) => acc + asset.usd_value, 0);
+  return assets?.reduce((acc, asset) => acc + asset.usd_value, 0);
 };
 
 export async function GET(req: Request) {
@@ -165,9 +165,11 @@ export async function GET(req: Request) {
           asset.color = setRandomColorToToken();
         });
         const totalNetWorth = calculateTotalNetWorth(assets);
-        const { liquidity, price } = await getPriceTokenUSD_Liquidity(
-          tokenAddress
-        );
+        // const { liquidity, price } = await getPriceTokenUSD_Liquidity(
+        //   tokenAddress
+        // );
+        const liquidity = 10000;
+        const price = 0.00000001;
         const marketCap = calculateMarketCap(tokenInfo.totalSupply, price);
 
         tokenData.metrics = [
@@ -240,9 +242,11 @@ export async function GET(req: Request) {
           const tokenInfo = await getTokenInfo(tokenAddress);
           const assets = await assetsFromTreasury(tokenInfo.treasuryAddress);
           const totalNetWorth = calculateTotalNetWorth(assets);
-          const { liquidity, price } = await getPriceTokenUSD_Liquidity(
-            tokenInfo.tokenAddress
-          );
+          // const { liquidity, price } = await getPriceTokenUSD_Liquidity(
+          //   tokenInfo.tokenAddress
+          // );
+          const liquidity = 10000;
+          const price = 0.00000001;
           const colorsHaveBeenUsed = tokenData.assets.map(
             (asset: { color: string }) => asset.color
           );
