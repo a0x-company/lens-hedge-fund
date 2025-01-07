@@ -45,6 +45,7 @@ const getTokenInfo = async (tokenAddress: string) => {
     deployerContractABI,
     provider
   );
+
   try {
     const tokenInfo = await deployerContract.getTokenDetails(tokenAddress);
     tokenInfo.addressTreasury = tokenInfo.addressTreasure;

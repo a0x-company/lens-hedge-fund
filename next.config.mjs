@@ -11,7 +11,7 @@ const nextConfig = {
     config.externals.push("pino-pretty", "encoding");
     config.experiments = {
       topLevelAwait: true,
-      layers: true, // Añadimos esta línea
+      layers: true,
     };
     return config;
   },

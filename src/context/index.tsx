@@ -9,6 +9,8 @@ import { createAppKit } from "@reown/appkit/react";
 import { State, WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+import { base } from "viem/chains";
+
 const queryClient = new QueryClient();
 
 if (!projectId) throw new Error("Project ID is not defined in context");
@@ -23,7 +25,7 @@ const lensSepolia = {
 
 export const appKit = createAppKit({
   adapters: [wagmiAdapter],
-  networks: [lensSepolia],
+  networks: [base, lensSepolia],
   metadata: metadata,
   projectId,
   features: {
