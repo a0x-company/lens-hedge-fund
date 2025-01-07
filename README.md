@@ -10,14 +10,6 @@
 </a>
 </div>
 
-## Demo Video
-
-<div align="center">
-  <a href="https://www.instagram.com/p/DEh0l02xbYy/">
-    Demo
-  </a>
-</div>
-
 ## The Problem
 
 Traditional investment lacks accessibility and transparency in Latin America. Retail investors need more sophisticated and democratic tools to participate in meaningful collective investments.
