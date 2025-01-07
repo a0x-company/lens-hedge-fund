@@ -31,7 +31,7 @@ export const useSwap = (
     address: contractAddress,
     chainId: chainId,
     abi: deployerAbi,
-    functionName: "swap", // TODO: modify function name
+    functionName: "swapTokens", // TODO: modify function name
     args: [_tokenIn, _tokenOut, _amountIn],
     query: {
       enabled: _amountIn > 0 && refetch,

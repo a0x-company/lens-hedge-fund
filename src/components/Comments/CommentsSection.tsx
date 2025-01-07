@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLensAuth } from "@/hooks/useLensAuth";
 import { useAccount } from "wagmi";
 import { useAppKit } from "@reown/appkit/react";
@@ -8,6 +8,28 @@ import { useToast } from "@/components/shadcn/use-toast";
 import { Button } from "@/components/shadcn/button";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "../shadcn/textarea";
+
+interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  author: {
+    id: string;
+    handle: string;
+    displayName?: string;
+    picture?: string;
+  };
+  stats: {
+    reactions: number;
+    comments: number;
+    mirrors: number;
+  };
+}
+
+interface PageInfo {
+  next?: string;
+  prev?: string;
+}
 
 interface CommentsSectionProps {
   tokenAddress: string;
@@ -21,8 +43,39 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
 
   const [comment, setComment] = useState("");
   const [isPosting, setIsPosting] = useState(false);
-  const [comments, setComments] = useState<any[]>([]); // TODO: Tipado correcto
+  const [comments, setComments] = useState<Comment[]>([]);
   const [loadingComments, setLoadingComments] = useState(false);
+  const [pageInfo, setPageInfo] = useState<PageInfo>({});
+
+  // Cargar comentarios al montar el componente y cuando cambie el tokenAddress
+  useEffect(() => {
+    loadComments();
+  }, [tokenAddress]);
+
+  const loadComments = async (cursor?: string) => {
+    try {
+      setLoadingComments(true);
+      const url = `/api/lens/comments/${tokenAddress}${cursor ? `?cursor=${cursor}` : ''}`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+
+      setComments(prev => cursor ? [...prev, ...data.comments] : data.comments);
+      setPageInfo(data.pageInfo);
+    } catch (error) {
+      console.error('Error loading comments:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load comments",
+        variant: "destructive"
+      });
+    } finally {
+      setLoadingComments(false);
+    }
+  };
 
   const handleConnect = async () => {
     try {
@@ -70,8 +123,8 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
       });
 
       setComment("");
-      // TODO: Actualizar lista de comentarios
-      // await loadComments()
+      // Recargar comentarios después de publicar
+      await loadComments();
     } catch (error) {
       console.error("Error posting comment:", error);
       toast({
@@ -84,27 +137,6 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
       setIsPosting(false);
     }
   };
-
-  // TODO: Implementar carga de comentarios
-  /*
-  const loadComments = async () => {
-    try {
-      setLoadingComments(true)
-      const response = await fetch(`/api/lens/comments/${tokenAddress}`)
-      const data = await response.json()
-      setComments(data.comments)
-    } catch (error) {
-      console.error('Error loading comments:', error)
-      toast({
-        title: "Error",
-        description: "Failed to load comments",
-        variant: "destructive"
-      })
-    } finally {
-      setLoadingComments(false)
-    }
-  }
-  */
 
   return (
     <section className="p-6 bg-white shadow-lg rounded-lg border border-gray-200">
@@ -165,16 +197,56 @@ export function CommentsSection({ tokenAddress }: CommentsSectionProps) {
 
       {/* Comments List */}
       <div className="mt-8 space-y-4">
-        {loadingComments ? (
+        {loadingComments && comments.length === 0 ? (
           <div className="flex justify-center py-4">
             <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
           </div>
         ) : comments.length > 0 ? (
-          comments.map((comment) => (
-            <div key={comment.id} className="p-4 border rounded-lg">
-              {/* TODO: Implementar vista de comentario */}
-            </div>
-          ))
+          <>
+            {comments.map((comment) => (
+              <div key={comment.id} className="p-4 border rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  {comment.author.picture && (
+                    <img
+                      src={comment.author.picture}
+                      alt={comment.author.handle}
+                      className="w-8 h-8 rounded-full"
+                    />
+                  )}
+                  <div>
+                    <p className="font-medium">
+                      {comment.author.displayName || comment.author.handle}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {new Date(comment.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-gray-700">{comment.content}</p>
+                <div className="flex gap-4 mt-2 text-sm text-gray-500">
+                  <span>{comment.stats.reactions} reactions</span>
+                  <span>{comment.stats.comments} replies</span>
+                  <span>{comment.stats.mirrors} mirrors</span>
+                </div>
+              </div>
+            ))}
+
+            {loadingComments && (
+              <div className="flex justify-center py-4">
+                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+              </div>
+            )}
+
+            {pageInfo.next && !loadingComments && (
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => loadComments(pageInfo.next)}
+              >
+                Load More
+              </Button>
+            )}
+          </>
         ) : (
           <p className="text-center text-gray-500">
             No comments yet. Be the first to comment!

@@ -69,8 +69,6 @@ export default function TokenPage() {
     enabled: !!tokenAddress,
   });
 
-  console.log("stats", stats);
-
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       {tokenInfo && stats && (
@@ -81,6 +79,7 @@ export default function TokenPage() {
             stats={stats}
             tokenAddress={tokenInfo.tokenAddress}
             poolAddress={tokenInfo.poolAddress}
+            imageURL={tokenInfo.tokenImage}
           />
           <PerformanceSection
             metrics={tokenInfo.metrics}
@@ -93,7 +92,7 @@ export default function TokenPage() {
             totalNetWorth={tokenInfo.totalNetWorth}
           />
           <ChartPrice tokenAddress={tokenInfo.tokenAddress} />
-          <CommentsSection />
+          <CommentsSection tokenAddress={tokenInfo.tokenAddress} />
         </div>
       )}
     </div>
