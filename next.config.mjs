@@ -38,6 +38,9 @@ const nextConfig = {
       {
         hostname: "www.clanker.world",
       },
+      {
+        hostname: "pbs.twimg.com",
+      },
     ],
   },
 };

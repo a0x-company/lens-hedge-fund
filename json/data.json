@@ -187,7 +187,7 @@
   },
   "0xe37eC651cfDc6E47f4F1D5Ad55747EC5375D2ABb": {
     "name": "Capital Test 2",
-    "description": "Chill Bull is a token that is used to reward the community for their contributions to the project.",
+    "description": "Capital Test 2 is a token that is used to reward the community for their contributions to the project.",
     "stats": [
       {
         "label": "Liquidity",
@@ -212,12 +212,6 @@
         "percentage": 86.55189884004434,
         "color": "#1E88E5",
         "fill": "#1E88E5"
-      },
-      {
-        "name": "MOXIE",
-        "percentage": 7.522020920673295,
-        "color": "#33FCFF",
-        "fill": "#33FCFF"
       },
       {
         "name": "BASED",
@@ -248,25 +242,13 @@
         "percentage": 0,
         "color": "#546E7A",
         "fill": "#546E7A"
-      },
-      {
-        "name": "ZURF",
-        "percentage": 0,
-        "color": "#7D33FF",
-        "fill": "#7D33FF"
-      },
-      {
-        "name": "Reward on base.clalm.org",
-        "percentage": 0,
-        "color": "#35FC95",
-        "fill": "#35FC95"
       }
     ],
     "totalNetWorth": 6.102101328187854,
     "metrics": [
       {
         "label": "Market Cap",
-        "value": "38220.71"
+        "value": "10000"
       },
       {
         "label": "Your Holdings",

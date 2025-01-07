@@ -105,7 +105,7 @@ const calculateTotalNetWorth = (
     usd_value: number;
   }[]
 ) => {
-  return assets.reduce((acc, asset) => acc + asset.usd_value, 0);
+  return assets?.reduce((acc, asset) => acc + asset.usd_value, 0);
 };
 
 export async function GET(req: Request) {
@@ -148,80 +148,82 @@ export async function GET(req: Request) {
     if (Object.values(tokenData).length <= 4) {
       try {
         // const tokenInfo = await getTokenInfo(tokenAddress);
-        const tokenInfo = {
-          name: "ChillBull",
-          description:
-            "Chill Bull is a token that is used to reward the community for their contributions to the project.",
-          treasuryAddress: "0x863B8801D8125D2BA10b53268fd6313043843536",
-          poolAddress: "0xda40f85288f6d88280975cb89a88cdf4577bda9b",
-          totalSupply: 100000000000,
-          imageURL:
-            "https://www.clanker.world/_next/image?url=https%3A%2F%2Fimagedelivery.net%2FBXluQx4ige9GuW0Ia56BHw%2Fa2b0cd06-942e-45e3-cef5-4c49dc391900%2Foriginal&w=128&q=75",
-          symbol: "CHILLBULL",
-          decimals: 18,
-        };
-        const assets = await assetsFromTreasury(tokenInfo.treasuryAddress);
-        assets?.forEach((asset: { color: string }) => {
-          asset.color = setRandomColorToToken();
-        });
-        const totalNetWorth = calculateTotalNetWorth(assets);
-        const { liquidity, price } = await getPriceTokenUSD_Liquidity(
-          tokenAddress
-        );
-        const marketCap = calculateMarketCap(tokenInfo.totalSupply, price);
+        // const tokenInfo = {
+        //   name: "Capital Test 2",
+        //   description:
+        //     "Capital Test 2 is a token that is used to reward the community for their contributions to the project.",
+        //   treasuryAddress: "0x863B8801D8125D2BA10b53268fd6313043843536",
+        //   poolAddress: "0xda40f85288f6d88280975cb89a88cdf4577bda9b",
+        //   totalSupply: 1000000000000000000000000000,
+        //   imageURL:
+        //     "https://pbs.twimg.com/profile_images/1858644018655100928/NOO-S785_400x400.jpg",
+        //   symbol: "CAPITAL test 2",
+        //   decimals: 18,
+        // };
+        // const assets = await assetsFromTreasury(tokenInfo.treasuryAddress);
+        // assets?.forEach((asset: { color: string }) => {
+        //   asset.color = setRandomColorToToken();
+        // });
+        // const totalNetWorth = calculateTotalNetWorth(assets);
+        // // const { liquidity, price } = await getPriceTokenUSD_Liquidity(
+        // //   tokenAddress
+        // // );
+        // const liquidity = 10000;
+        // const price = 0.00000001;
+        // const marketCap = calculateMarketCap(tokenInfo.totalSupply, price);
 
-        tokenData.metrics = [
-          {
-            label: "Market Cap",
-            value: marketCap.toFixed(2),
-          },
-          {
-            label: "Your Holdings",
-            value: "0",
-          },
-          {
-            label: "Your Market Value",
-            value: "0",
-          },
-        ];
+        // tokenData.metrics = [
+        //   {
+        //     label: "Market Cap",
+        //     value: marketCap.toFixed(2),
+        //   },
+        //   {
+        //     label: "Your Holdings",
+        //     value: "0",
+        //   },
+        //   {
+        //     label: "Your Market Value",
+        //     value: "0",
+        //   },
+        // ];
 
-        const tokenDataToWriteForFile = {
-          name: tokenInfo.name,
-          description: tokenData.description,
-          stats: [
-            { label: "Liquidity", value: liquidity.toFixed(2) },
-            { label: "Price Token/USD", value: price.toFixed(9) },
-          ], // TODO: get stats from pool
-          assets: assets?.map(
-            (asset: {
-              symbol: string;
-              portfolio_percentage: number;
-              color: string;
-            }) => ({
-              name: asset.symbol,
-              percentage: asset.portfolio_percentage,
-              color: asset.color,
-              fill: asset.color,
-            })
-          ),
-          totalNetWorth: totalNetWorth,
-          metrics: tokenData.metrics, // TODO: get metrics from pool
-          treasuryAddress: tokenInfo.treasuryAddress,
-          tokenAddress: tokenAddress,
-          tokenImage: tokenInfo.imageURL,
-          tokenSymbol: tokenInfo.symbol,
-          tokenDecimals: tokenInfo.decimals,
-          tokenTotalSupply: tokenInfo.totalSupply,
-          poolAddress: tokenData.poolAddress,
-          updatedAt: new Date().toISOString(),
-          createdAt: tokenData.createdAt,
-        };
-        allFundTokenData[tokenAddress] = tokenDataToWriteForFile;
-        await fs.writeFile(
-          jsonDirectory + "/data.json",
-          JSON.stringify(allFundTokenData, null, 2)
-        );
-        return NextResponse.json(tokenDataToWriteForFile);
+        // const tokenDataToWriteForFile = {
+        //   name: tokenInfo.name,
+        //   description: tokenData.description,
+        //   stats: [
+        //     { label: "Liquidity", value: liquidity.toFixed(2) },
+        //     { label: "Price Token/USD", value: price.toFixed(9) },
+        //   ], // TODO: get stats from pool
+        //   assets: assets?.map(
+        //     (asset: {
+        //       symbol: string;
+        //       portfolio_percentage: number;
+        //       color: string;
+        //     }) => ({
+        //       name: asset.symbol,
+        //       percentage: asset.portfolio_percentage,
+        //       color: asset.color,
+        //       fill: asset.color,
+        //     })
+        //   ),
+        //   totalNetWorth: totalNetWorth,
+        //   metrics: tokenData.metrics, // TODO: get metrics from pool
+        //   treasuryAddress: tokenInfo.treasuryAddress,
+        //   tokenAddress: tokenAddress,
+        //   tokenImage: tokenInfo.imageURL,
+        //   tokenSymbol: tokenInfo.symbol,
+        //   tokenDecimals: tokenInfo.decimals,
+        //   tokenTotalSupply: tokenInfo.totalSupply,
+        //   poolAddress: tokenData.poolAddress,
+        //   updatedAt: new Date().toISOString(),
+        //   createdAt: tokenData.createdAt,
+        // };
+        // allFundTokenData[tokenAddress] = tokenDataToWriteForFile;
+        // await fs.writeFile(
+        //   jsonDirectory + "/data.json",
+        //   JSON.stringify(allFundTokenData, null, 2)
+        // );
+        return NextResponse.json(tokenData);
       } catch (error) {
         console.error("Error writing token data to file:", error);
         return NextResponse.json(
@@ -238,60 +240,62 @@ export async function GET(req: Request) {
       if (lastUpdated <= twelveHoursAgo) {
         try {
           const tokenInfo = await getTokenInfo(tokenAddress);
-          const assets = await assetsFromTreasury(tokenInfo.treasuryAddress);
-          const totalNetWorth = calculateTotalNetWorth(assets);
-          const { liquidity, price } = await getPriceTokenUSD_Liquidity(
-            tokenInfo.tokenAddress
-          );
-          const colorsHaveBeenUsed = tokenData.assets.map(
-            (asset: { color: string }) => asset.color
-          );
-          const colorPick = setRandomColorToToken(colorsHaveBeenUsed);
-          const marketCap = calculateMarketCap(tokenInfo.totalSupply, price);
-          const marketCapVector = tokenData.metrics.find(
-            (metric: { label: string }) => metric.label === "Market Cap"
-          );
-          if (marketCapVector) {
-            marketCapVector.value = marketCap.toFixed(2);
-          } else {
-            tokenData.metrics.push({
-              label: "Market Cap",
-              value: marketCap.toFixed(2),
-            });
-          }
+          // const assets = await assetsFromTreasury(tokenInfo.treasuryAddress);
+          // const totalNetWorth = calculateTotalNetWorth(assets);
+          // const { liquidity, price } = await getPriceTokenUSD_Liquidity(
+          //   tokenInfo.tokenAddress
+          // );
+          const liquidity = 10000;
+          const price = 0.00000001;
+          // const colorsHaveBeenUsed = tokenData.assets.map(
+          //   (asset: { color: string }) => asset.color
+          // );
+          // const colorPick = setRandomColorToToken(colorsHaveBeenUsed);
+          // const marketCap = calculateMarketCap(tokenInfo.totalSupply, price);
+          // const marketCapVector = tokenData.metrics.find(
+          //   (metric: { label: string }) => metric.label === "Market Cap"
+          // );
+          // if (marketCapVector) {
+          //   marketCapVector.value = marketCap.toFixed(2);
+          // } else {
+          //   tokenData.metrics.push({
+          //     label: "Market Cap",
+          //     value: marketCap.toFixed(2),
+          //   });
+          // }
 
-          const tokenDataToWriteForFile = {
-            name: tokenInfo.name,
-            description: tokenData.description,
-            stats: [
-              { label: "Liquidity", value: liquidity.toFixed(2) },
-              { label: "Price Token/USD", value: price.toFixed(9) },
-            ], // TODO: get stats from pool
-            assets: assets.map(
-              (asset: { symbol: string; portfolio_percentage: number }) => ({
-                name: asset.symbol,
-                percentage: asset.portfolio_percentage,
-                color: colorPick,
-                fill: colorPick,
-              })
-            ),
-            metrics: [...tokenData.metrics], // TODO: get metrics from pool
-            totalNetWorth: totalNetWorth,
-            treasuryAddress: tokenInfo.treasuryAddress,
-            tokenAddress: tokenAddress,
-            tokenImage: tokenInfo.imageURL,
-            tokenSymbol: tokenInfo.symbol,
-            tokenDecimals: tokenInfo.decimals,
-            tokenTotalSupply: tokenInfo.totalSupply,
-            poolAddress: tokenInfo.poolAddress,
-            updatedAt: new Date().toISOString(),
-            createdAt: tokenData.createdAt,
-          };
-          await fs.writeFile(
-            jsonDirectory + "/data.json",
-            JSON.stringify(tokenDataToWriteForFile, null, 2)
-          );
-          return NextResponse.json(tokenDataToWriteForFile);
+          // const tokenDataToWriteForFile = {
+          //   name: tokenInfo.name,
+          //   description: tokenData.description,
+          //   stats: [
+          //     { label: "Liquidity", value: liquidity.toFixed(2) },
+          //     { label: "Price Token/USD", value: price.toFixed(9) },
+          //   ], // TODO: get stats from pool
+          //   assets: assets.map(
+          //     (asset: { symbol: string; portfolio_percentage: number }) => ({
+          //       name: asset.symbol,
+          //       percentage: asset.portfolio_percentage,
+          //       color: colorPick,
+          //       fill: colorPick,
+          //     })
+          //   ),
+          //   metrics: [...tokenData.metrics], // TODO: get metrics from pool
+          //   totalNetWorth: totalNetWorth,
+          //   treasuryAddress: tokenInfo.treasuryAddress,
+          //   tokenAddress: tokenAddress,
+          //   tokenImage: tokenInfo.imageURL,
+          //   tokenSymbol: tokenInfo.symbol,
+          //   tokenDecimals: tokenInfo.decimals,
+          //   tokenTotalSupply: tokenInfo.totalSupply,
+          //   poolAddress: tokenInfo.poolAddress,
+          //   updatedAt: new Date().toISOString(),
+          //   createdAt: tokenData.createdAt,
+          // };
+          // await fs.writeFile(
+          //   jsonDirectory + "/data.json",
+          //   JSON.stringify(tokenDataToWriteForFile, null, 2)
+          // );
+          return NextResponse.json(tokenData);
         } catch (error) {
           console.error("Error writing token data to file:", error);
           return NextResponse.json(
