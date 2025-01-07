@@ -16,12 +16,23 @@ const queryClient = new QueryClient();
 if (!projectId) throw new Error("Project ID is not defined in context");
 
 const lensSepolia = {
-  chainId: 37111,
+  id: 37111,
   name: "Lens Network Sepolia Testnet",
-  currency: "GRASS",
-  explorerUrl: "https://block-explorer.testnet.lens.dev",
-  rpcUrl: "https://rpc.testnet.lens.dev",
-} as any;
+  nativeCurrency: {
+    name: "GRASS",
+    symbol: "GRASS",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: { http: ["https://rpc.testnet.lens.dev"] },
+  },
+  blockExplorers: {
+    default: {
+      name: "Explorer",
+      url: "https://block-explorer.testnet.lens.dev",
+    },
+  },
+} as const;
 
 export const appKit = createAppKit({
   adapters: [wagmiAdapter],
