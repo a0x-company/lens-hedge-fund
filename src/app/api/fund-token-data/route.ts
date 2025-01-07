@@ -217,10 +217,10 @@ export async function GET(req: Request) {
           createdAt: tokenData.createdAt,
         };
         allFundTokenData[tokenAddress] = tokenDataToWriteForFile;
-        await fs.writeFile(
-          jsonDirectory + "/data.json",
-          JSON.stringify(allFundTokenData, null, 2)
-        );
+        // await fs.writeFile(
+        //   jsonDirectory + "/data.json",
+        //   JSON.stringify(allFundTokenData, null, 2)
+        // );
         return NextResponse.json(tokenDataToWriteForFile);
       } catch (error) {
         console.error("Error writing token data to file:", error);
@@ -287,10 +287,10 @@ export async function GET(req: Request) {
             updatedAt: new Date().toISOString(),
             createdAt: tokenData.createdAt,
           };
-          await fs.writeFile(
-            jsonDirectory + "/data.json",
-            JSON.stringify(tokenDataToWriteForFile, null, 2)
-          );
+          // await fs.writeFile(
+          //   jsonDirectory + "/data.json",
+          //   JSON.stringify(tokenDataToWriteForFile, null, 2)
+          // );
           return NextResponse.json(tokenDataToWriteForFile);
         } catch (error) {
           console.error("Error writing token data to file:", error);
