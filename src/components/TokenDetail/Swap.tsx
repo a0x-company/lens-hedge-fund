@@ -180,7 +180,7 @@ export function Swap({
 
   const amountIn =
     currentMode === "buy" ? wethAmountFormatted : tokenAmountFormatted;
-    
+
   const tokenIn =
     currentMode === "buy"
       ? (addresses.wethAddress as `0x${string}`)
@@ -196,9 +196,10 @@ export function Swap({
     isLoading: isLoadingSwap,
   } = useSwap(
     addresses.deployerAddress as `0x${string}`,
-    currentMode === "buy" 
-      ? parseEther(ethAmount)
-      : parseUnits(tokenAmount, 18)
+    currentMode === "buy" ? parseEther(ethAmount) : parseUnits(tokenAmount, 18),
+    tokenIn,
+    tokenOut,
+    true
   );
 
   const handleSwap = async () => {
