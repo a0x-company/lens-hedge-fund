@@ -54,5 +54,4 @@ capital-frens/
 
 ## Contact
 
-- Lens: [@capitalfrens](https://hey.xyz/u/capitalfrens)
-- Twitter: [@Manueliasweb3](https://twitter.com/Manueliasweb3), [@oydual3](https://twitter.com/oydual3)
+- Lens: [@capitalfrens](https://hey.xyz/u/capitalfrens), [@nicocapital](https://hey.xyz/u/nicocapital), [@manueliasweb3](https://hey.xyz/u/manueliasweb3), [@matiasdev](https://hey.xyz/u/matiasdev)
